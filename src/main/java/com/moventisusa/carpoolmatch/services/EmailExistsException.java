@@ -1,4 +1,4 @@
-package com.moventisusa.carpoolmatch.service;
+package com.moventisusa.carpoolmatch.services;
 
 /**
  * Created by Damian Davila

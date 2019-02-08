@@ -1,13 +1,14 @@
 package com.moventisusa.carpoolmatch.controllers;
 
 import com.moventisusa.carpoolmatch.models.forms.UserForm;
-import com.moventisusa.carpoolmatch.service.EmailExistsException;
+import com.moventisusa.carpoolmatch.services.EmailExistsException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.security.Principal;
@@ -21,13 +22,15 @@ public class AuthenticationController extends AbstractBaseController {
     @GetMapping(value = "/register")
     public String registerForm(Model model) {
         model.addAttribute(new UserForm());
+        model.addAttribute(MESSAGE_KEY, "info|Let's get started with your login credentials first.");
         model.addAttribute("title", "Register");
         return "register";
     }
 
     @PostMapping(value = "/register")
-    public String register(@ModelAttribute @Valid UserForm userForm, Errors errors) {
+    public String register(@ModelAttribute @Valid UserForm userForm, Errors errors, RedirectAttributes model) {
 
+        model.addAttribute("title", "Register");
         if (errors.hasErrors())
             return "register";
 
@@ -37,8 +40,8 @@ public class AuthenticationController extends AbstractBaseController {
             errors.rejectValue("email", "email.alreadyexists", e.getMessage());
             return "register";
         }
-
-        return "redirect:/";
+        model.addFlashAttribute(MESSAGE_KEY, "success|Credentials all set. Now let's get your contact and other info set up.");
+        return "redirect:/profile";
     }
 
     @GetMapping(value = "/login")
@@ -53,7 +56,10 @@ public class AuthenticationController extends AbstractBaseController {
         if (logout != null)
             model.addAttribute(MESSAGE_KEY, "info|You have logged out");
 
+        model.addAttribute("title", "Log In");
+
         return "login";
     }
+
 
 }

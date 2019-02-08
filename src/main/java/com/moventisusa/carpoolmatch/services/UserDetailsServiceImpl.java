@@ -1,4 +1,4 @@
-package com.moventisusa.carpoolmatch.service;
+package com.moventisusa.carpoolmatch.services;
 
 import com.moventisusa.carpoolmatch.models.User;
 import com.moventisusa.carpoolmatch.repositories.UserRepository;

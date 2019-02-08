@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="fragments :: head">
+</head>
+
+<body>
+
+<nav th:replace="fragments :: page-header-menu"></nav>
+
+<div th:replace="fragments :: messages"></div>
+
+<div th:replace="fragments :: title"></div>
+
+<main class="container">
+    <form method="post" th:action="@{/profile}" th:object="${user}">
+        <div class="row">
+
+            <div class="col-md">
+
+                <div class="form-group">
+                    <label th:for="username">Username (publicly visible)</label>
+                    <input class="form-control" th:field="*{username}" required="required" />
+                    <div class="error" th:errors="*{username}"></div>
+                </div>
+                <div class="form-group">
+                    <label th:for="fullName">Full Name (private)</label>
+                    <input class="form-control" th:field="*{fullName}" required="required" />
+                    <div class="error" th:errors="*{fullName}"></div>
+                </div>
+                <div class="form-group">
+                    <label th:for="email">Email</label>
+                    <input class="form-control" th:field="*{email}" required="required" />
+                    <div class="error" th:errors="*{email}"></div>
+                </div>
+
+            </div>
+            <div class="col-md">
+
+                <div class="form-group">
+                    <label th:for="address1">Home address 1</label>
+                    <input class="form-control" th:field="*{address1}" required="required" />
+                    <div class="error" th:errors="*{address1}"></div>
+                </div>
+                <div class="form-group">
+                    <label th:for="address2">Home address 2</label>
+                    <input class="form-control" th:field="*{address2}" />
+                    <div class="error" th:errors="*{address2}"></div>
+                </div>
+                <div class="form-group">
+                    <label th:for="city">City</label>
+                    <input class="form-control" th:field="*{city}" required="required" />
+                    <div class="error" th:errors="*{city}"></div>
+                </div>
+                <div class="form-group">
+                    <label th:for="state">State</label>
+                    <input class="form-control" th:field="*{state}" required="required"  />
+                    <div class="error" th:errors="*{state}"></div>
+                </div>
+                <div class="form-group">
+                    <label th:for="postalCode">ZIP code</label>
+                    <input class="form-control" th:field="*{postalCode}" required="required" />
+                    <div class="error" th:errors="*{postalCode}"></div>
+                </div>
+
+            </div>
+
+        </div>
+        <div class="row justify-content-center">
+            <input type="submit" value="Save and Continue" class="btn btn-primary" />
+        </div>
+    </form>
+</main>
+
+<footer th:replace="fragments :: page-footer"></footer>
+
+</body>
+</html>

@@ -1,4 +1,4 @@
-package com.moventisusa.carpoolmatch.service;
+package com.moventisusa.carpoolmatch.services;
 
 import com.moventisusa.carpoolmatch.models.User;
 import com.moventisusa.carpoolmatch.models.forms.UserForm;
@@ -9,6 +9,7 @@ import com.moventisusa.carpoolmatch.models.forms.UserForm;
 public interface UserService {
 
     public User save(UserForm userForm) throws EmailExistsException;
+    public User update(User user) throws EmailExistsException;
     public User findByEmail(String email);
 
 }

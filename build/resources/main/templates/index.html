@@ -6,10 +6,12 @@
 <body>
         <nav th:replace="fragments :: page-header-menu"></nav>
 
-        <div class="container body-content">
-            <h1>Carpool Match</h1>
-            <p>Blah blah</p>
-        </div>
+        <div th:replace="fragments :: messages"></div>
+
+        <!-- Begin page content -->
+        <main role="main" class="container-fluid body-content">
+            <!-- Use a main section for the content of the pages. -->
+        </main>
 
         <footer th:replace="fragments :: page-footer"></footer>
 </body>
