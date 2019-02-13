@@ -11,7 +11,7 @@
 
 <div th:replace="fragments :: title"></div>
 
-<main class="container">
+<main class="container" id="profile">
     <form method="post" th:action="@{/profile}" th:object="${user}">
         <div class="row">
 
@@ -19,7 +19,7 @@
 
                 <div class="form-group">
                     <label th:for="username">Username (publicly visible)</label>
-                    <input class="form-control" th:field="*{username}" required="required" />
+                    <input class="form-control" th:field="*{username}" required="required" autofocus="autofocus"/>
                     <div class="error" th:errors="*{username}"></div>
                 </div>
                 <div class="form-group">

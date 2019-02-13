@@ -1,6 +1,6 @@
 package com.moventisusa.carpoolmatch.models;
 
-import javax.persistence.Entity;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
@@ -38,6 +38,10 @@ public class User extends AbstractEntity {
 
     @NotNull
     private Boolean enabled = true;
+
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(unique = true)
+    private MatchCriteria matchCriteria;
 
     public User() {}
 
@@ -139,6 +143,15 @@ public class User extends AbstractEntity {
         this.enabled = enabled;
     }
 
+    public MatchCriteria getMatchCriteria() {
+        return matchCriteria;
+    }
+
+    public void setMatchCriteria(MatchCriteria matchCriteria) {
+        this.matchCriteria = matchCriteria;
+    }
+
+
     @Override
     public boolean equals(final Object obj) {
         if (this == obj) {
@@ -162,8 +175,10 @@ public class User extends AbstractEntity {
     @Override
     public String toString() {
         return "User{" +
-                "email='" + email + '\'' +
+                "uid='" + getUid() + '\'' +
+                ", email='" + email + '\'' +
                 ", fullName='" + fullName + '\'' +
+                ", matchCriteria='" + matchCriteria + '\'' +
                 '}';
     }
 

@@ -26,56 +26,50 @@ body {
 main.body-content {
   padding: 60px 15px 0;
 }
-
 #message-ribbon-top {
   margin-top: 70px;
 }
-
 .footer > .container {
   padding-right: 15px;
   padding-left: 15px;
 }
-
 code {
   font-size: 80%;
 }
-
 .body-content {
     margin-top: 72px;
 }
-
 td, th {
     padding: 10px;
 }
-
 tr:nth-child(odd) {
     background-color: #e4e4e4;
 }
-
 table.job-listing {
     margin: 30px auto;
     border: 1px solid #e4e4e4;
     width: 80%;
 }
-
 table.job-listing td:first-child {
     font-weight: bold;
 }
-
 table.job-listing td:last-child {
     width: 80%;
 }
-
 label {
     margin-right: 15px;
 }
-
 ul.form-group {
     padding: 0;
 }
-
 ul.form-group li {
     list-display: none;
     display: inline-block;
     padding-right: 15px;
+}
+legend {
+    font-size: inherit;
+}
+.inline-input {
+    display: inline-block;
 }

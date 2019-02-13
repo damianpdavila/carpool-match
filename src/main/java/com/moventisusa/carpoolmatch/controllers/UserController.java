@@ -3,6 +3,7 @@ package com.moventisusa.carpoolmatch.controllers;
 import com.moventisusa.carpoolmatch.controllers.AbstractBaseController;
 import com.moventisusa.carpoolmatch.models.User;
 import com.moventisusa.carpoolmatch.models.forms.UserForm;
+import com.moventisusa.carpoolmatch.repositories.MatchCriteriaRepository;
 import com.moventisusa.carpoolmatch.repositories.UserRepository;
 import com.moventisusa.carpoolmatch.services.EmailExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,11 @@ public class UserController extends AbstractBaseController {
     @Autowired
     UserRepository userRepository;
 
+    /*
+    @Autowired
+    MatchCriteriaRepository matchCriteriaRepository;
+    */
+
     @GetMapping(value = "/profile")
     public String showProfile(Model model, Principal principal) {
         User user = getLoggedInUser(principal);
@@ -42,7 +48,7 @@ public class UserController extends AbstractBaseController {
     }
 
     @PostMapping(value = "/profile")
-    public String updateProfile(@ModelAttribute @Valid User user, Errors errors, RedirectAttributes model) {
+    public String updateProfile(@ModelAttribute @Valid User user, Errors errors, Model model, RedirectAttributes redirModel) {
 
         model.addAttribute("title", "About You");
         if (errors.hasErrors())
@@ -54,7 +60,7 @@ public class UserController extends AbstractBaseController {
             errors.rejectValue("email", "email.alreadyexists", e.getMessage());
             return "profile";
         }
-        model.addFlashAttribute(MESSAGE_KEY, "success|Updated your profile");
+        redirModel.addFlashAttribute(MESSAGE_KEY, "success|Updated your profile");
         return "redirect:/preferences";
     }
 

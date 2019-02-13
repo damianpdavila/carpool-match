@@ -1,5 +1,6 @@
 package com.moventisusa.carpoolmatch.services;
 
+import com.moventisusa.carpoolmatch.models.MatchCriteria;
 import com.moventisusa.carpoolmatch.models.User;
 import com.moventisusa.carpoolmatch.models.forms.UserForm;
 import com.moventisusa.carpoolmatch.repositories.UserRepository;

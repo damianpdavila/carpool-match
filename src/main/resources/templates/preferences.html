@@ -1,18 +1,118 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org/">
-
 <head th:replace="fragments :: head">
 </head>
+
 <body>
+
 <nav th:replace="fragments :: page-header-menu"></nav>
 
 <div th:replace="fragments :: messages"></div>
 
-<!-- Begin page content -->
-<main role="main" class="container body-content">
-    <!-- Use a main section for the content of the pages. -->
+<div th:replace="fragments :: title"></div>
+
+<main class="container" id="preferences">
+    <form method="post" th:action="@{/preferences}" th:object="${user.matchCriteria}">
+        <div class="row">
+
+            <div class="col-md">
+
+
+                <div class="form-group row">
+                    <div class="col-md">
+                        <legend>What I can offer:</legend>
+                    </div>
+                    <div class="col-md">
+                        <div th:each="rT : ${T(com.moventisusa.carpoolmatch.models.RideType).values()}" class="inline-input">
+                            <input type="radio" th:id="${{rT}}" th:value="${{rT}}" th:field="*{rideType}" />
+                            <label th:for="${{rT}}" th:text="${rT.description}">Ride Type</label>
+                        </div>
+                    </div>
+                    <div class="error" th:errors="*{rideType}"></div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-md">
+                        <label th:for="matchDistance">Distance from carpool match</label>
+                    </div>
+                    <div class="col-md">
+                        <input class="form-control" th:field="*{matchDistance}" placeholder="Distance (in miles)"/>
+                    </div>
+                    <div class="error" th:errors="*{matchDistance}"></div>
+                </div>
+
+
+                <div class="form-group row">
+                    <div class="col-md">
+                        <legend>Days I am available:</legend>
+                    </div>
+                    <div class="col-md">
+
+                        <div th:each="day : ${daysAvailableList}" class="checkbox inline-input">
+                            <input type="checkbox" class="form-control" name="daysAvailableUpdate" th:checked="${day.available}" th:value="${day.day}" th:id="${day.day}"/>
+                            <label th:for="${day.day}" th:text="${day.day}">Day</label>
+                        </div>
+
+                        <!-- Displays initial, can update initial, displays update, subsequent update fails on "java.lang.ClassCastException: java.lang.String cannot be cast to java.lang.Enum"
+                        <div th:each="day : *{daysAvailable}" class="inline-input">
+                            <input type="checkbox" th:id="${day.key}" th:value="${day.value}" th:field="*{daysAvailable[__${day.key}__]}" />
+                            <label th:for="${day.key}" th:text="${day.key}">Day</label>
+                        </div>
+                        -->
+                        <!--
+                        <div th:each="day : *{daysAvailable}" class="inline-input">
+                            <input type="checkbox" th:id="${day.key}" th:checked="${day.value} == true" th:value="${day.value}" name="daysAvailable" th:field="${day}"/>
+                            <label th:for="${day.key}" th:text="${day.key}">Day</label>
+                        </div>
+                        -->
+                        <!--
+                        <div th:each="day : *{daysAvailable}" class="inline-input">
+                            <input type="checkbox" th:id="${day.key}" th:checked="${day.value} == true" th:value="${day.value}" th:field="*{daysAvailable[__${day.key}__]}" />
+                            <label th:for="${day.key}" th:text="${day.key}">Day</label>
+                        </div>
+                        -->
+                        <!--
+                        <div th:each="day : ${daysAvailableList}" class="checkbox inline-input">
+                            <input type="checkbox" class="form-control" name="daysAvailable" th:checked="${day.value}" th:id="${day.key}"/>
+                            <label th:for="${day.key}" th:text="${day.key}">Day</label>
+                        </div>
+                        -->
+                        <!--
+                        <div th:each="day : *{daysAvailable}" class="inline-input">
+                            <input type="text" th:id="${day.key}" th:value="${day.value}" th:field="*{daysAvailable}" />
+                            <label th:for="${day.key}" th:text="${day.key}">Day</label>
+                        </div>
+                        -->
+                        <!--
+                        <div th:each="day : *{daysAvailable}" class="inline-input">
+                            <input type="checkbox" th:id="${day.key}" th:checked="${day.value}" th:field="*{daysAvailable}" />
+                            <label th:for="${day.key}" th:text="${day.key}">Day</label>
+                        </div>
+                        -->
+                        <!--
+                        <div th:each="day : ${T(java.time.DayOfWeek).values()}" class="inline-input">
+                            <input type="checkbox" th:id="${{day}}" th:value="${{day}}" th:field="*{daysAvailable}" />
+                            <label th:for="${{day}}" th:text="${day}">Day</label>
+                        </div>
+                        -->
+                    </div>
+                    <!--
+                    <div class="error" th:errors="${daysAvailableUpdate}"></div>
+                    -->
+                </div>
+
+            </div>
+
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-md">
+                <input type="submit" value="Save and Show Matches" class="btn btn-primary" />
+            </div>
+        </div>
+    </form>
 </main>
 
 <footer th:replace="fragments :: page-footer"></footer>
+
 </body>
 </html>
