@@ -1,6 +1,10 @@
 package com.moventisusa.carpoolmatch.models;
 
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.NumberFormat;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
 import java.util.HashMap;
@@ -14,24 +18,29 @@ import java.util.regex.Pattern;
 @Entity
 public class MatchCriteria extends AbstractEntity {
 
+    @NotNull
     @Enumerated(EnumType.STRING)
     private RideType rideType;
 
-    private double matchDistance;
+    private Double matchDistance;
 
+    @DateTimeFormat(pattern = "HH:mm")
     private LocalTime dropoffTime;
 
+    @DateTimeFormat(pattern = "HH:mm")
     private LocalTime pickupTime;
 
-    private int seatsAvailable;
+    private Integer seatsAvailable;
 
-    private int seatsNeeded;
+    private Integer seatsNeeded;
 
-    private boolean smoking;
+    private boolean noSmoking;
 
-    private double payToOtherDriver;
+    @NumberFormat(style = NumberFormat.Style.CURRENCY)
+    private Double payToOtherDriver;
 
-    private double payFromOtherRider;
+    @NumberFormat(style = NumberFormat.Style.CURRENCY)
+    private Double payFromOtherRider;
 
     @ElementCollection
     @MapKeyColumn
@@ -45,25 +54,33 @@ public class MatchCriteria extends AbstractEntity {
 
     public MatchCriteria() {}
 
-    public MatchCriteria(RideType rideType, double matchDistance, LocalTime dropoffTime, LocalTime pickupTime, int seatsAvailable, int seatsNeeded, boolean smoking, double payToOtherDriver, double payFromOtherRider, Map<DayOfWeek, Boolean> daysAvailable, User user) {
+    public MatchCriteria(RideType rideType, Double matchDistance, LocalTime dropoffTime, LocalTime pickupTime, Integer seatsAvailable, Integer seatsNeeded, boolean noSmoking, Double payToOtherDriver, Double payFromOtherRider, Map<DayOfWeek, Boolean> daysAvailable, User user) {
         this.rideType = rideType;
         this.matchDistance = matchDistance;
         this.dropoffTime = dropoffTime;
         this.pickupTime = pickupTime;
         this.seatsAvailable = seatsAvailable;
         this.seatsNeeded = seatsNeeded;
-        this.smoking = smoking;
+        this.noSmoking = noSmoking;
         this.payToOtherDriver = payToOtherDriver;
         this.payFromOtherRider = payFromOtherRider;
         this.daysAvailable = daysAvailable;
         this.user = user;
     }
 
-    public double getMatchDistance() {
+    public RideType getRideType() {
+        return rideType;
+    }
+
+    public void setRideType(RideType rideType) {
+        this.rideType = rideType;
+    }
+
+    public Double getMatchDistance() {
         return matchDistance;
     }
 
-    public void setMatchDistance(double matchDistance) {
+    public void setMatchDistance(Double matchDistance) {
         this.matchDistance = matchDistance;
     }
 
@@ -83,60 +100,44 @@ public class MatchCriteria extends AbstractEntity {
         this.pickupTime = pickupTime;
     }
 
-    public int getSeatsAvailable() {
+    public Integer getSeatsAvailable() {
         return seatsAvailable;
     }
 
-    public void setSeatsAvailable(int seatsAvailable) {
+    public void setSeatsAvailable(Integer seatsAvailable) {
         this.seatsAvailable = seatsAvailable;
     }
 
-    public int getSeatsNeeded() {
+    public Integer getSeatsNeeded() {
         return seatsNeeded;
     }
 
-    public void setSeatsNeeded(int seatsNeeded) {
+    public void setSeatsNeeded(Integer seatsNeeded) {
         this.seatsNeeded = seatsNeeded;
     }
 
-    public boolean isSmoking() {
-        return smoking;
+    public boolean isNoSmoking() {
+        return noSmoking;
     }
 
-    public void setSmoking(boolean smoking) {
-        this.smoking = smoking;
+    public void setNoSmoking(boolean noSmoking) {
+        this.noSmoking = noSmoking;
     }
 
-    public double getPayToOtherDriver() {
+    public Double getPayToOtherDriver() {
         return payToOtherDriver;
     }
 
-    public void setPayToOtherDriver(double payToOtherDriver) {
+    public void setPayToOtherDriver(Double payToOtherDriver) {
         this.payToOtherDriver = payToOtherDriver;
     }
 
-    public double getPayFromOtherRider() {
+    public Double getPayFromOtherRider() {
         return payFromOtherRider;
     }
 
-    public void setPayFromOtherRider(double payFromOtherRider) {
+    public void setPayFromOtherRider(Double payFromOtherRider) {
         this.payFromOtherRider = payFromOtherRider;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public RideType getRideType() {
-        return rideType;
-    }
-
-    public void setRideType(RideType rideType) {
-        this.rideType = rideType;
     }
 
     public Map<DayOfWeek, Boolean> getDaysAvailable() {
@@ -145,6 +146,14 @@ public class MatchCriteria extends AbstractEntity {
 
     public void setDaysAvailable(Map<DayOfWeek, Boolean> daysAvailable) {
         this.daysAvailable = daysAvailable;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     /**  The inherited .equals() and .hashCode() are sufficient
@@ -172,7 +181,7 @@ public class MatchCriteria extends AbstractEntity {
                 ", pickupTime=" + pickupTime +
                 ", seatsAvailable=" + seatsAvailable +
                 ", seatsNeeded=" + seatsNeeded +
-                ", smoking=" + smoking +
+                ", noSmoking=" + noSmoking +
                 ", payToOtherDriver=" + payToOtherDriver +
                 ", payFromOtherRider=" + payFromOtherRider +
                 '}';
@@ -183,4 +192,5 @@ public class MatchCriteria extends AbstractEntity {
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();
     }
+
 }

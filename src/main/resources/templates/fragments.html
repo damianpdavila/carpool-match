@@ -66,7 +66,7 @@
                         <a class="nav-link" th:href="@{/preferences}">Preferences</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Match</a>
+                        <a class="nav-link" th:href="@{/match}">Match</a>
                     </li>
                     <li class="nav-item" th:if="${#authorization.expression('isAuthenticated()')}">
                         <form th:action="@{/logout}" method="post" name="logoutForm"></form>

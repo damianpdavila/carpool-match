@@ -3,8 +3,8 @@ package com.moventisusa.carpoolmatch.controllers;
 import com.moventisusa.carpoolmatch.models.MatchCriteria;
 import com.moventisusa.carpoolmatch.models.User;
 import com.moventisusa.carpoolmatch.models.forms.DaysAvailableForm;
-import com.moventisusa.carpoolmatch.repositories.MatchCriteriaRepository;
 import com.moventisusa.carpoolmatch.repositories.UserRepository;
+import com.moventisusa.carpoolmatch.services.MatchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,21 +25,23 @@ import java.util.*;
 public class MatchController extends AbstractBaseController {
 
     @Autowired
-    MatchCriteriaRepository matchCriteriaRepository;
-    @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    MatchService matchService;
 
     @GetMapping(value = "/preferences")
     public String showPreferences(Model model, Principal principal) {
         User user = getLoggedInUser(principal);
-        if (user == null){
+        if (user == null) {
             model.addAttribute(MESSAGE_KEY, "error|User not found. Please log out and in again.");
             return "preferences";
         }
-        if (user.getMatchCriteria() == null){
+        if (user.getMatchCriteria() == null) {
             MatchCriteria newCriteria = new MatchCriteria();
+            newCriteria.setNoSmoking(true);
 
-            Map<DayOfWeek,Boolean> testAvailable = new HashMap<DayOfWeek, Boolean>();
+            Map<DayOfWeek, Boolean> testAvailable = new HashMap<DayOfWeek, Boolean>();
             testAvailable.put(DayOfWeek.MONDAY, true);
             testAvailable.put(DayOfWeek.TUESDAY, true);
             testAvailable.put(DayOfWeek.WEDNESDAY, true);
@@ -58,14 +60,15 @@ public class MatchController extends AbstractBaseController {
             Want all days of week so that displays on page that way.
         */
         boolean available;
-        for (DayOfWeek day : DayOfWeek.values() ){
-            /*  if this day in user's daysAvailable map, set available, otherwise set unavailable */
+        for (DayOfWeek day : DayOfWeek.values()) {
+
             DaysAvailableForm daForm = new DaysAvailableForm();
             daForm.setDay(day.getDisplayName(TextStyle.FULL, Locale.US));
-            /* */
             available = user.getMatchCriteria().getDaysAvailable().getOrDefault(day, false);
             daForm.setAvailable(available);
             daysAvailableList.add(daForm);
+            /* just need M-F for this implementation */
+            if (day == DayOfWeek.FRIDAY) break;
         }
         model.addAttribute("daysAvailableList", daysAvailableList);
 
@@ -84,8 +87,8 @@ public class MatchController extends AbstractBaseController {
             return "preferences";
 
         /* Re-initialize the user's daysAvailable hashmap to reflect their choices; map only contains available days. */
-        Map<DayOfWeek,Boolean> newAvailable = new HashMap<DayOfWeek, Boolean>();
-        for (String day : daysAvailableUpdate){
+        Map<DayOfWeek, Boolean> newAvailable = new HashMap<>();
+        for (String day : daysAvailableUpdate) {
             newAvailable.put(DayOfWeek.valueOf(day.toUpperCase().trim()), true);
         }
         user.getMatchCriteria().setDaysAvailable(newAvailable);
@@ -93,7 +96,37 @@ public class MatchController extends AbstractBaseController {
         userRepository.save(user);
 
         redirModel.addFlashAttribute(MESSAGE_KEY, "success|Updated your match criteria");
-        return "redirect:/";
+        return "redirect:/match";
     }
 
+    @GetMapping(value = "/match")
+    public String getMatches(Model model, Principal principal) {
+
+        User user = getLoggedInUser(principal);
+        if (user == null) {
+            model.addAttribute(MESSAGE_KEY, "error|User not found. Please log out and in again.");
+            return "match";
+        }
+
+        List<User> allUsers = userRepository.findAll();
+        model.addAttribute("matchedUsers", matchService.getMatchedUsers(user, allUsers));
+
+        // Not needed -- model.addAttribute(user);
+        model.addAttribute("title", "Your Matches");
+
+        return "match";
+    }
+
+    @PostMapping(value = "/match")
+    public String showMatches(@ModelAttribute @Valid User user,
+                              // @RequestParam String[] dummy,
+                              Errors errors, Model model, RedirectAttributes redirModel) {
+
+        model.addAttribute("title", "Your Match Criteria");
+        if (errors.hasErrors())
+            return "preferences";
+
+        //redirModel.addFlashAttribute(MESSAGE_KEY, "success|Updated your match criteria");
+        return "match";
+    }
 }

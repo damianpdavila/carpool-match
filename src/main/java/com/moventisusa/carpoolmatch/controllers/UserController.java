@@ -27,14 +27,6 @@ import java.security.Principal;
 @Controller
 public class UserController extends AbstractBaseController {
 
-    @Autowired
-    UserRepository userRepository;
-
-    /*
-    @Autowired
-    MatchCriteriaRepository matchCriteriaRepository;
-    */
-
     @GetMapping(value = "/profile")
     public String showProfile(Model model, Principal principal) {
         User user = getLoggedInUser(principal);

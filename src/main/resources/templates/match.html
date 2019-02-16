@@ -11,8 +11,27 @@
 
 <div th:replace="fragments :: title"></div>
 
-<main class="container" id="preferences">
-    <form method="post" th:action="@{/preferences}" th:object="${user.matchCriteria}">
+<main class="container-fluid body-content" id="match">
+    <form method="post" th:action="@{/match}" th:object="${matchedUsers}">
+
+        <div class="row">
+            <div class="col-md-3">
+                <p>The List</p>
+                <div th:each="matchedUser : ${matchedUsers}" class="matched-users">
+                    <p class="matched-username" th:text="${matchedUser.user.username}">Username</p>
+                    <p class="testing" th:text="${matchedUser.matchTotal}">Total</p>
+                    <ul class="matched-criterium" th:each="match : ${matchedUser.matchDetail}">
+                        <li th:text="${match.key}">Criterium</li>
+                    </ul>
+                </div>
+
+            </div>
+            <div class="col-md">
+                <p>The Map</p>
+            </div>
+        </div>
+
+    <!-- ###########################
         <div class="row">
 
             <div class="col-md">
@@ -97,12 +116,12 @@
 
                 <div class="form-group row">
                     <div class="col-md">
-                        <label th:for="noSmoking">No Smoking</label>
+                        <label th:for="smoking">No smoking</label>
                     </div>
                     <div class="col-md">
-                        <input class="form-control" type="checkbox" th:field="*{noSmoking}" />
+                        <input class="form-control" type="checkbox" th:field="*{smoking}" />
                     </div>
-                    <div class="error" th:errors="*{noSmoking}"></div>
+                    <div class="error" th:errors="*{smoking}"></div>
                 </div>
 
                 <div class="form-group row">
@@ -129,17 +148,20 @@
                     <div class="error" th:errors="*{payFromOtherRider}"></div>
                 </div>
 
-                </div>
-
             </div>
 
         </div>
+
+        </div>
+
         <div class="row justify-content-center">
             <div class="col-md">
                 <input type="submit" value="Save and Show Matches" class="btn btn-primary" />
             </div>
         </div>
+        -->
     </form>
+
 </main>
 
 <footer th:replace="fragments :: page-footer"></footer>
