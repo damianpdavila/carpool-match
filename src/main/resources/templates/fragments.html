@@ -30,6 +30,15 @@
     <nav th:fragment="page-header-no-menu" class="navbar navbar-expand-lg fixed-top navbar-light bg-light">
         <div class="container">
             <a class="navbar-brand" th:href="@{/}">Carpool Match</a>
+
+            <div class="collapse navbar-collapse" id="navbar-no-menu">
+                <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+                    <li class="nav-item" th:if="${#authorization.expression('isAuthenticated()')}">
+                        <form th:action="@{/logout}" method="post" name="logoutForm"></form>
+                        <a class="nav-link" href="#" onclick="document.logoutForm.submit()">Log Out</a>
+                    </li>
+                </ul>
+            </div>
         </div>
     </nav>
 

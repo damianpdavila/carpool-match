@@ -1,5 +1,6 @@
 package com.moventisusa.carpoolmatch.controllers;
 
+import com.moventisusa.carpoolmatch.models.User;
 import com.moventisusa.carpoolmatch.models.forms.UserForm;
 import com.moventisusa.carpoolmatch.services.EmailExistsException;
 import org.springframework.stereotype.Controller;
@@ -20,7 +21,17 @@ import java.security.Principal;
 public class AuthenticationController extends AbstractBaseController {
 
     @GetMapping(value = "/register")
-    public String registerForm(Model model) {
+    public String registerForm(Model model, Principal principal) {
+
+        /* Safety check. Ensure a user is not already logged in before registering. Ensures no leaking data */
+        User user = getLoggedInUser(principal);
+        if (user != null) {
+            model.addAttribute(new UserForm());
+            model.addAttribute(MESSAGE_KEY, "danger|Sorry you must log out first.");
+            model.addAttribute("title", "Register");
+            return "register";
+        }
+
         model.addAttribute(new UserForm());
         model.addAttribute(MESSAGE_KEY, "info|Let's get started with your login credentials first.");
         model.addAttribute("title", "Register");
@@ -28,7 +39,14 @@ public class AuthenticationController extends AbstractBaseController {
     }
 
     @PostMapping(value = "/register")
-    public String register(@ModelAttribute @Valid UserForm userForm, Errors errors, RedirectAttributes model) {
+    public String register(@ModelAttribute @Valid UserForm userForm, Errors errors, RedirectAttributes model, Principal principal) {
+
+        /* Safety check. Ensure a user is not already logged in before registering. Ensures no leaking data */
+        User user = getLoggedInUser(principal);
+        if (user != null) {
+            model.addFlashAttribute(MESSAGE_KEY, "danger|Sorry you must log out first.");
+            return "redirect:/register";
+        }
 
         model.addAttribute("title", "Register");
         if (errors.hasErrors())
