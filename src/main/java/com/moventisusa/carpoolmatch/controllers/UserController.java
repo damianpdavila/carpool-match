@@ -1,6 +1,9 @@
 package com.moventisusa.carpoolmatch.controllers;
 
+import com.google.maps.GeocodingApi;
+import com.google.maps.model.GeocodingResult;
 import com.moventisusa.carpoolmatch.controllers.AbstractBaseController;
+import com.moventisusa.carpoolmatch.models.MapConnector;
 import com.moventisusa.carpoolmatch.models.User;
 import com.moventisusa.carpoolmatch.models.forms.UserForm;
 import com.moventisusa.carpoolmatch.repositories.MatchCriteriaRepository;
@@ -45,6 +48,18 @@ public class UserController extends AbstractBaseController {
         model.addAttribute("title", "About You");
         if (errors.hasErrors())
             return "profile";
+
+        try {
+            GeocodingResult[] results =  GeocodingApi.geocode(MapConnector.getInstance().getContext(),
+                    user.getAddress1() +", "+ user.getAddress2() +", "+ user.getCity() +", "+ user.getState() +" "+ user.getPostalCode()).await();
+            user.setLatitude(results[0].geometry.location.lat);
+            user.setLongitude(results[0].geometry.location.lng);
+        }
+        catch (Exception e) {
+            model.addAttribute(MESSAGE_KEY, "error|Could not find your address; please correct or confirm it: ".concat(e.getMessage()));
+            errors.rejectValue("address1", "address1.alreadyexists", e.getMessage());
+            return "profile";
+        }
 
         try {
             userService.update(user);

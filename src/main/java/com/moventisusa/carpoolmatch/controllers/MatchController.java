@@ -110,8 +110,6 @@ public class MatchController extends AbstractBaseController {
 
         List<User> allUsers = userRepository.findAll();
         model.addAttribute("matchedUsers", matchService.getMatchedUsers(user, allUsers));
-
-        // Not needed -- model.addAttribute(user);
         model.addAttribute("title", "Your Matches");
 
         return "match";

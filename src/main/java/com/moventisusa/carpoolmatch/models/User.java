@@ -36,6 +36,10 @@ public class User extends AbstractEntity {
 
     private String postalCode;
 
+    private double latitude;
+
+    private double longitude;
+
     @NotNull
     private Boolean enabled = true;
 
@@ -141,6 +145,22 @@ public class User extends AbstractEntity {
 
     public void setEnabled(Boolean enabled) {
         this.enabled = enabled;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
 
     public MatchCriteria getMatchCriteria() {
