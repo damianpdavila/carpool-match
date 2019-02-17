@@ -11,23 +11,28 @@
 
 <div th:replace="fragments :: title"></div>
 
-<main class="container" id="preferences">
-    <form method="post" th:action="@{/preferences}" th:object="${user.matchCriteria}">
+<main class="container" id="view">
+
         <div class="row">
 
-            <div class="col-md">
+            <div class="col-md-3 view-match-user" th:object="${user}">
+                <h2 th:text="*{username}">Username</h2>
+                <p><a th:href="@{/contact/{userid}(userid=*{uid})}">Contact Me!</a></p>
+            </div>
+
+
+            <fieldset disabled="disabled">
+
+            <div class="col-md view-match-details" th:object="${user.matchCriteria}">
 
                 <div th:replace="fragments :: user-preferences"></div>
 
             </div>
 
+            </fieldset>
+
         </div>
-        <div class="row justify-content-center">
-            <div class="col-md">
-                <input type="submit" value="Save and Show Matches" class="btn btn-primary" />
-            </div>
-        </div>
-    </form>
+
 </main>
 
 <footer th:replace="fragments :: page-footer"></footer>

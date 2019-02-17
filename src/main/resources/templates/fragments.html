@@ -111,5 +111,118 @@
 
     </footer>
 
+    <div th:fragment="user-preferences">
+
+        <div class="form-group row">
+            <div class="col-md">
+                <legend>What I can offer:</legend>
+            </div>
+            <div class="col-md">
+                <div th:each="rT : ${T(com.moventisusa.carpoolmatch.models.RideType).values()}" class="inline-input">
+                    <input type="radio" th:id="${{rT}}" th:value="${{rT}}" th:field="*{rideType}" required="required"/>
+                    <label th:for="${{rT}}" th:text="${rT.description}">Ride Type</label>
+                </div>
+            </div>
+            <div class="error" th:errors="*{rideType}"></div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-md">
+                <label th:for="matchDistance">Distance from carpool match</label>
+            </div>
+            <div class="col-md">
+                <input class="form-control" th:field="*{matchDistance}" placeholder="Distance (in miles)"/>
+            </div>
+            <div class="error" th:errors="*{matchDistance}"></div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-md">
+                <legend>Days I am available:</legend>
+            </div>
+            <div class="col-md">
+
+                <div th:each="day : ${daysAvailableList}" class="checkbox inline-input">
+                    <input type="checkbox" class="form-control" name="daysAvailableUpdate" th:checked="${day.available}" th:value="${day.day}" th:id="${day.day}"/>
+                    <label th:for="${day.day}" th:text="${day.day}">Day</label>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-md">
+                <label th:for="dropoffTime">Time I leave for school dropoff</label>
+            </div>
+            <div class="col-md">
+                <input type="time" class="form-control" th:field="*{{dropoffTime}}" th:value="*{{dropoffTime}}"  />
+            </div>
+            <div class="error" th:errors="*{dropoffTime}"></div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-md">
+                <label th:for="pickupTime">Time I can pick up at school</label>
+            </div>
+            <div class="col-md">
+                <input type="time" class="form-control" th:field="*{{pickupTime}}" th:value="*{{pickupTime}}"  />
+            </div>
+            <div class="error" th:errors="*{pickupTime}"></div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-md">
+                <label th:for="seatsAvailable">No. of seats I have</label>
+            </div>
+            <div class="col-md">
+                <input class="form-control" th:field="*{seatsAvailable}" placeholder="Blank for no preference" type="number" step="1" pattern="[0-9]*" title="Enter a whole number"/>
+            </div>
+            <div class="error" th:errors="*{seatsAvailable}"></div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-md">
+                <label th:for="seatsNeeded">No. of seats I need</label>
+            </div>
+            <div class="col-md">
+                <input class="form-control" th:field="*{seatsNeeded}" placeholder="Blank for no preference"  type="number" step="1" pattern="[0-9]*" title="Enter a whole number"/>
+            </div>
+            <div class="error" th:errors="*{seatsNeeded}"></div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-md">
+                <label th:for="noSmoking">No Smoking</label>
+            </div>
+            <div class="col-md">
+                <input class="form-control" type="checkbox" th:field="*{noSmoking}" />
+            </div>
+            <div class="error" th:errors="*{noSmoking}"></div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-md">
+                <legend>Compensation <i>(always optional)</i></legend>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md">
+                <label th:for="payToOtherDriver">If I am a rider only, I can pay up to $</label>
+            </div>
+            <div class="col-md">
+                <input class="form-control" th:field="*{payToOtherDriver}" placeholder="$N.NN, dollar sign is optional" type="text" pattern="^(\$[0-9]+\.?[0-9]*)|([0-9]*\.[0-9]+)|([0-9]*)$" title="Enter dollars and cents with optional $"/><span> per ride.</span>
+            </div>
+            <div class="error" th:errors="*{payToOtherDriver}"></div>
+        </div>
+        <div class="row">
+            <div class="col-md">
+                <label th:for="payFromOtherRider">If I am a driver only, I would like $</label>
+            </div>
+            <div class="col-md">
+                <input class="form-control" th:field="*{payFromOtherRider}" placeholder="$N.NN, dollar sign is optional" pattern="^(\$[0-9]+\.?[0-9]*)|([0-9]*\.[0-9]+)|([0-9]*)$" title="Enter dollars and cents with optional $" /><span> per ride.</span>
+            </div>
+            <div class="error" th:errors="*{payFromOtherRider}"></div>
+        </div>
+    </div>
 </body>
 </html>

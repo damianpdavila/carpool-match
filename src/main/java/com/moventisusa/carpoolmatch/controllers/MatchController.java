@@ -9,10 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
@@ -127,4 +124,43 @@ public class MatchController extends AbstractBaseController {
         //redirModel.addFlashAttribute(MESSAGE_KEY, "success|Updated your match criteria");
         return "match";
     }
+
+    @GetMapping(value = "/view/{userId}")
+    public String viewMatch(@PathVariable int userId, Model model, Principal principal) {
+
+        User user = userRepository.findById(userId).get();
+        if (user == null) {
+            model.addAttribute(MESSAGE_KEY, "error|User not found. Please log out and in again.");
+            return "match";
+        }
+
+        /*  Thymeleaf/JPA wouldn't automatically link the daysAvailable map from html to database.
+            So, after much research, am now doing this work around.
+        */
+        /*  Use DaysAvailableForm to link user's daysAvailable map to all weekdays in html */
+        List<DaysAvailableForm> daysAvailableList = new ArrayList<>();
+        /*  Build list of DaysAvailableForm's, forcing one per each day of week.
+            Want all days of week so that displays on page that way.
+        */
+        boolean available;
+        for (DayOfWeek day : DayOfWeek.values()) {
+
+            DaysAvailableForm daForm = new DaysAvailableForm();
+            daForm.setDay(day.getDisplayName(TextStyle.FULL, Locale.US));
+            available = user.getMatchCriteria().getDaysAvailable().getOrDefault(day, false);
+            daForm.setAvailable(available);
+            daysAvailableList.add(daForm);
+            /* just need M-F for this implementation */
+            if (day == DayOfWeek.FRIDAY) break;
+        }
+        model.addAttribute("daysAvailableList", daysAvailableList);
+
+        model.addAttribute(user);
+        model.addAttribute("title", "View A Match");
+
+
+        return "view";
+    }
+
+
 }
