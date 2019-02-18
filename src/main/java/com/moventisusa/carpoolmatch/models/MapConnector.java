@@ -7,7 +7,7 @@ public class MapConnector {
     private static MapConnector mapConnector = new MapConnector();
 
     private GeoApiContext mapContext = new GeoApiContext.Builder()
-            .apiKey("AIzaSyBlEMTjswGM0-lDgv3GsDUI3xv18aBOlns")
+            .apiKey("")
             .build();
 
     private MapConnector() {}
