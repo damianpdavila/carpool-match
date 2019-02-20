@@ -1,13 +1,16 @@
 package com.moventisusa.carpoolmatch.models;
 
 import com.google.maps.GeoApiContext;
+import com.moventisusa.carpoolmatch.config.ApplicationConfig;
 
 public class MapConnector {
 
     private static MapConnector mapConnector = new MapConnector();
 
+    private ApplicationConfig applicationConfig = new ApplicationConfig();
+
     private GeoApiContext mapContext = new GeoApiContext.Builder()
-            .apiKey("")
+            .apiKey(applicationConfig.getMapApiKey())
             .build();
 
     private MapConnector() {}

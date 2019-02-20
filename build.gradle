@@ -36,6 +36,7 @@ dependencies {
     compile 'com.google.maps:google-maps-services:0.9.1'
 	runtime('mysql:mysql-connector-java')
 	runtime('org.springframework.boot:spring-boot-devtools')
+	runtime files('resources/config.properties')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 	testCompile('org.springframework.security:spring-security-test')
 }
