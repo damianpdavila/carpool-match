@@ -48,27 +48,7 @@ public class MatchController extends AbstractBaseController {
 
             user.setMatchCriteria(newCriteria);
         }
-        /*  Thymeleaf/JPA wouldn't automatically link the daysAvailable map from html to database.
-            So, after much research, am now doing this work around.
-        */
-        /*  Use DaysAvailableForm to link user's daysAvailable map to all weekdays in html */
-        List<DaysAvailableForm> daysAvailableList = new ArrayList<>();
-        /*  Build list of DaysAvailableForm's, forcing one per each day of week.
-            Want all days of week so that displays on page that way.
-        */
-        boolean available;
-        for (DayOfWeek day : DayOfWeek.values()) {
-
-            DaysAvailableForm daForm = new DaysAvailableForm();
-            daForm.setDay(day.getDisplayName(TextStyle.FULL, Locale.US));
-            available = user.getMatchCriteria().getDaysAvailable().getOrDefault(day, false);
-            daForm.setAvailable(available);
-            daysAvailableList.add(daForm);
-            /* just need M-F for this implementation */
-            if (day == DayOfWeek.FRIDAY) break;
-        }
-        model.addAttribute("daysAvailableList", daysAvailableList);
-
+        model.addAttribute("daysAvailableList", createDaysAvailableList(user));
         model.addAttribute(user);
         model.addAttribute("title", "Your Match Criteria");
         return "preferences";
@@ -134,6 +114,17 @@ public class MatchController extends AbstractBaseController {
             return "match";
         }
 
+        model.addAttribute("daysAvailableList", createDaysAvailableList(user));
+
+        model.addAttribute(user);
+        model.addAttribute("title", "View A Match");
+
+
+        return "view";
+    }
+
+    private List<DaysAvailableForm> createDaysAvailableList(User user) {
+
         /*  Thymeleaf/JPA wouldn't automatically link the daysAvailable map from html to database.
             So, after much research, am now doing this work around.
         */
@@ -153,13 +144,9 @@ public class MatchController extends AbstractBaseController {
             /* just need M-F for this implementation */
             if (day == DayOfWeek.FRIDAY) break;
         }
-        model.addAttribute("daysAvailableList", daysAvailableList);
 
-        model.addAttribute(user);
-        model.addAttribute("title", "View A Match");
+        return daysAvailableList;
 
-
-        return "view";
     }
 
 
