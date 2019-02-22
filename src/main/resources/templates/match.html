@@ -29,10 +29,7 @@
             </div>
             <div class="col-md">
                 <p>The Map</p>
-
-                <div th:each="result : ${geocodedAddressList}" class="matched-users">
-                    <p class="matched-username" th:text="${result}">Address lat long</p>
-                </div>
+                <img class="matched-map" th:src="${mapImage}">
 
             </div>
         </div>

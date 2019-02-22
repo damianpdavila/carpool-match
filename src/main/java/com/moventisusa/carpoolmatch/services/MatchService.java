@@ -14,6 +14,17 @@ import java.util.*;
 @Service
 public class MatchService {
 
+    public static final String CRITERIA_RIDETYPE = new String("Ride type (Drop Off/Pick Up/Both/None)");
+    public static final String CRITERIA_RIDETYPE_GETPAID = new String("Ride type (Drop Off/Pick Up/Both/None) + Compensation: I get paid");
+    public static final String CRITERIA_RIDETYPE_PAY = new String("Ride type (Drop Off/Pick Up/Both/None) + Compensation: I can pay");
+    public static final String CRITERIA_DAYSAVAILABLE = new String("Days available");
+    public static final String CRITERIA_DISTANCETOMATCH = new String("Distance to car pool match");
+    public static final String CRITERIA_DROPOFFTIME = new String("Time I leave for drop off");
+    public static final String CRITERIA_PICKUPTIME = new String("Time I can pick up");
+    public static final String CRITERIA_SEATSHAVE = new String("Seats I have");
+    public static final String CRITERIA_SEATSNEED = new String("Seats I need");
+    public static final String CRITERIA_SMOKING = new String("Smoking preference");
+
     @Autowired
     private UserRepository userRepository;
 
@@ -75,7 +86,7 @@ public class MatchService {
          // private Double payToOtherDriver;
          // private Double payFromOtherRider;
             if (user.getMatchCriteria().getRideType() == null || pmUser.getMatchCriteria().getRideType() == null){
-                matchedUser.addMatch("Ride type (Drop Off/Pick Up/Both/None)", HIGH_MATCH);
+                matchedUser.addMatch(CRITERIA_RIDETYPE, HIGH_MATCH);
             } else {
                 rideTypeValue = rideTypeMatrix.get(user.getMatchCriteria().getRideType()).get(pmUser.getMatchCriteria().getRideType());
 
@@ -83,17 +94,17 @@ public class MatchService {
                     /* could be a match, potential match user is not driving, need to compare compensation */
                     if (user.getMatchCriteria().getPayFromOtherRider() == null || pmUser.getMatchCriteria().getPayToOtherDriver() == null ||
                             user.getMatchCriteria().getPayFromOtherRider() <= pmUser.getMatchCriteria().getPayToOtherDriver()){
-                        matchedUser.addMatch("Ride type (Drop Off/Pick Up/Both/None) + Compensation: I get paid", MID_MATCH);
+                        matchedUser.addMatch(CRITERIA_RIDETYPE_GETPAID, MID_MATCH);
                     }
                 } else if (rideTypeValue == MAYBE_MATCH_USER_RIDE_ONLY){
                     /* could be a match, current subject user is not driving, need to compare compensation */
                     if (user.getMatchCriteria().getPayToOtherDriver() == null || pmUser.getMatchCriteria().getPayFromOtherRider() == null ||
                             user.getMatchCriteria().getPayToOtherDriver() >= pmUser.getMatchCriteria().getPayFromOtherRider()){
-                        matchedUser.addMatch("Ride type (Drop Off/Pick Up/Both/None) + Compensation: I can pay", MID_MATCH);
+                        matchedUser.addMatch(CRITERIA_RIDETYPE_PAY, MID_MATCH);
                     }
                 } else if (rideTypeValue != NO_MATCH){
                     /* value 0 = "no match" */
-                    matchedUser.addMatch("Ride type (Drop Off/Pick Up/Both/None)", rideTypeValue);
+                    matchedUser.addMatch(CRITERIA_RIDETYPE, rideTypeValue);
                 }
 
             }
@@ -106,7 +117,7 @@ public class MatchService {
                 }
             }
             if ( ! dayMisMatch){
-                matchedUser.addMatch("Days available", HIGH_MATCH);
+                matchedUser.addMatch(CRITERIA_DAYSAVAILABLE, HIGH_MATCH);
             }
 
          // private Double matchDistance;
@@ -114,34 +125,34 @@ public class MatchService {
 
             if (user.getMatchCriteria().getMatchDistance() == null ||
                     matchDistance <= user.getMatchCriteria().getMatchDistance()){
-                matchedUser.addMatch("Distance to car pool match", HIGH_MATCH);
+                matchedUser.addMatch(CRITERIA_DISTANCETOMATCH, HIGH_MATCH);
             }
 
          // private LocalTime dropoffTime;
             if (user.getMatchCriteria().getDropoffTime() == null || pmUser.getMatchCriteria().getDropoffTime() == null ||
                     ! user.getMatchCriteria().getDropoffTime().isAfter(pmUser.getMatchCriteria().getDropoffTime()) ){
-                matchedUser.addMatch("Time I leave for drop off", HIGH_MATCH);
+                matchedUser.addMatch(CRITERIA_DROPOFFTIME, HIGH_MATCH);
             }
          // private LocalTime pickupTime;
             if (user.getMatchCriteria().getPickupTime() == null || pmUser.getMatchCriteria().getPickupTime() == null ||
                     ! user.getMatchCriteria().getPickupTime().isAfter(pmUser.getMatchCriteria().getPickupTime()) ){
-                matchedUser.addMatch("Time I can pick up", HIGH_MATCH);
+                matchedUser.addMatch(CRITERIA_PICKUPTIME, HIGH_MATCH);
             }
          // private Integer seatsAvailable;
             if (user.getMatchCriteria().getSeatsAvailable() == null || pmUser.getMatchCriteria().getSeatsNeeded() == null ||
                     user.getMatchCriteria().getSeatsAvailable() >= pmUser.getMatchCriteria().getSeatsNeeded()){
-                matchedUser.addMatch("Seats I have", HIGH_MATCH);
+                matchedUser.addMatch(CRITERIA_SEATSHAVE, HIGH_MATCH);
             }
          // private Integer seatsNeeded;
             if (user.getMatchCriteria().getSeatsNeeded() == null || pmUser.getMatchCriteria().getSeatsAvailable() == null ||
                     user.getMatchCriteria().getSeatsNeeded() <= pmUser.getMatchCriteria().getSeatsAvailable()){
-                matchedUser.addMatch("Seats I need", HIGH_MATCH);
+                matchedUser.addMatch(CRITERIA_SEATSNEED, HIGH_MATCH);
             }
          // private boolean noSmoking;
             /* If not no smoking, then assume smoker OR no preference */
             if ( ! user.getMatchCriteria().isNoSmoking() || ! pmUser.getMatchCriteria().isNoSmoking() ||
                     user.getMatchCriteria().isNoSmoking() == pmUser.getMatchCriteria().isNoSmoking()){
-                matchedUser.addMatch("Smoking preference", HIGH_MATCH);
+                matchedUser.addMatch(CRITERIA_SMOKING, HIGH_MATCH);
             }
 
             if (matchedUser.getMatchTotal() > 0){
@@ -181,6 +192,15 @@ public class MatchService {
     /*::                                                                         :*/
     /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
 
+    /** Calculate distance between two geographic points
+     *
+     * @param lat1
+     * @param lon1
+     * @param lat2
+     * @param lon2
+     * @param unit
+     * @return
+     */
     private static double distance(double lat1, double lon1, double lat2, double lon2, String unit) {
         if ((lat1 == lat2) && (lon1 == lon2)) {
             return 0;
