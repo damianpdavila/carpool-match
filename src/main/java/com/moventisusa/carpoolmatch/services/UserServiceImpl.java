@@ -47,7 +47,7 @@ public class UserServiceImpl implements UserService {
 
         /* If email changed, ensure not exists already */
         User existingUser = userRepository.findById(updatedUser.getUid()).get();
-        if (updatedUser.getEmail() != existingUser.getEmail()){
+        if ( ! updatedUser.getEmail().equals(existingUser.getEmail())){
 
             /* email changed must validate it */
             if (userRepository.findByEmail(updatedUser.getEmail()) != null){

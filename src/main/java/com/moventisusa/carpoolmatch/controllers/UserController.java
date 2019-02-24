@@ -24,7 +24,7 @@ public class UserController extends AbstractBaseController {
     public String showProfile(Model model, Principal principal) {
         User user = getLoggedInUser(principal);
         if (user == null){
-            model.addAttribute(MESSAGE_KEY, "error|User not found. Please log out and in again.");
+            model.addAttribute(MESSAGE_KEY, "danger|User not found. Please log out and in again.");
             return "profile";
         }
         model.addAttribute(user);
@@ -46,7 +46,7 @@ public class UserController extends AbstractBaseController {
             user.setLongitude(results[0].geometry.location.lng);
         }
         catch (Exception e) {
-            model.addAttribute(MESSAGE_KEY, "error|Could not find your address; please correct or confirm it: ".concat(e.getMessage()));
+            model.addAttribute(MESSAGE_KEY, "danger|Could not find your address; please correct or confirm it: ".concat(e.getMessage()));
             errors.rejectValue("address1", "address1.alreadyexists", e.getMessage());
             return "profile";
         }

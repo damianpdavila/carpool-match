@@ -41,7 +41,7 @@ public class MatchController extends AbstractBaseController {
     public String showPreferences(Model model, Principal principal) {
         User user = getLoggedInUser(principal);
         if (user == null) {
-            model.addAttribute(MESSAGE_KEY, "error|User not found. Please log out and in again.");
+            model.addAttribute(MESSAGE_KEY, "danger|User not found. Please log out and in again.");
             return "preferences";
         }
         if (user.getMatchCriteria() == null) {
@@ -91,7 +91,7 @@ public class MatchController extends AbstractBaseController {
 
         User user = getLoggedInUser(principal);
         if (user == null) {
-            model.addAttribute(MESSAGE_KEY, "error|User not found. Please log out and in again.");
+            model.addAttribute(MESSAGE_KEY, "danger|User not found. Please log out and in again.");
             return "match";
         }
 
@@ -121,9 +121,11 @@ public class MatchController extends AbstractBaseController {
     @GetMapping(value = "/view/{userId}")
     public String viewMatch(@PathVariable int userId, Model model, Principal principal) {
 
-        User user = userRepository.findById(userId).get();
-        if (user == null) {
-            model.addAttribute(MESSAGE_KEY, "error|User not found. Please log out and in again.");
+        User user;
+        try {
+            user = userRepository.findById(userId).get();
+        } catch (IllegalArgumentException | NoSuchElementException e) {
+            model.addAttribute(MESSAGE_KEY, "danger|User not found. Please log out and in again.");
             return "match";
         }
 
@@ -142,8 +144,8 @@ public class MatchController extends AbstractBaseController {
 
     /** Build list of DaysAvailableForm's, forcing one per each day of week.
      *
-     * @param user
-     * @return
+     * @param user  user requesting to be matched
+     * @return      DaysAvailableForm object populated with user's data
      */
     private List<DaysAvailableForm> createDaysAvailableList(User user) {
 
@@ -169,9 +171,9 @@ public class MatchController extends AbstractBaseController {
 
     /** Generate Google Static Map using matched user data.
      *
-     * @param user
-     * @param matchedUsers
-     * @return The string value to insert into the <IMG> src attribute.
+     * @param user          user requesting the matches
+     * @param matchedUsers  list of other users who matched
+     * @return              The string value to insert into the <IMG> src attribute.
      */
     private String createMatchMapImageString(User user, List<MatchedUser> matchedUsers){
 
@@ -187,7 +189,7 @@ public class MatchController extends AbstractBaseController {
 
         for (int i = 0; i < matchedUsers.size(); i++) {
             markers = new StaticMapsRequest.Markers();
-            if (matchedUsers.get(i).getMatchDetail().containsKey(matchService.CRITERIA_DISTANCETOMATCH)) {
+            if (matchedUsers.get(i).getMatchDetail().containsKey(MatchService.CRITERIA_DISTANCETOMATCH)) {
                 markers.color("green");
             } else {
                 markers.color("red");
@@ -222,9 +224,9 @@ public class MatchController extends AbstractBaseController {
 
     /** Generate data (geographic points) which will later be drawn as a path in the static map
      *
-     * @param center
+     * @param center    the center of the circle
      * @param radiusD  (in meters)
-     * @return
+     * @return          list of points that make up the circle, expressed in latitude, longitude pairs
      */
     private List<LatLng> getCirclePoints(LatLng center, Double radiusD, String unit) {
         List<LatLng> circlePoints = new ArrayList<>();
@@ -236,9 +238,9 @@ public class MatchController extends AbstractBaseController {
         } else {
             radius = radiusD;
         }
-        if (unit == "mile") {
+        if (unit.equals("mile")) {
             radius = radius * MILES_TO_METERS;
-        } else if (unit == "km") {
+        } else if (unit.equals("km")) {
             radius = radius * 1000;
         }
         // convert center coordinates to radians
