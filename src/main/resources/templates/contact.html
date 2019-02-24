@@ -29,7 +29,7 @@
                 </div>
                 <div class="form-group">
                     <label th:for="contactMessage">Message</label>
-                    <textarea class="form-control" th:name="contactMessage" th:value="${contactMessage}" th:id="contactMessage" required="required" autofocus="autofocus"/>Contact message</textarea>
+                    <textarea class="form-control" th:name="contactMessage" th:text="${contactMessage}" th:id="contactMessage" required="required" autofocus="autofocus"/></textarea>
                     <div class="error" th:errors="${contactMessage}"></div>
                 </div>
 

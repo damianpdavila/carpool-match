@@ -42,8 +42,37 @@ public class NotificationController extends AbstractBaseController {
             return "redirect:/match";
         }
 
-        String contactMessage = "Hi Username,\n" +
-                "Looks like we're a match!";
+        /* create default email content */
+        /*
+        Hi Username,
+        Looks like we're a match!
+        I'd like to discuss starting a car pool with you if you're
+        available.
+                Here's my contact info:
+        Name: Name
+        Email: Email Address
+        Phone: Phone
+        I look forward to meeting you!
+                IMPORTANT:
+        Do not reply to this email sent by Car Pool Match. Name will
+        not receive it. Click on Name's email address above or just
+        copy and paste it into a new email message.
+        */
+        String separator = System.getProperty("line.separator");
+        String contactMessage = String.join(
+                separator,
+                String.format("Hi %s,", toUser.getUsername()),
+                "Looks like we're a match!",
+                "I'd like to discuss starting a car pool with you if you're available",
+                "Here's my contact info:",
+                String.format("Name: %s", fromUser.getFullName()),
+                String.format("Email: %s", fromUser.getEmail()),
+                "Phone: ",
+                "I look forward to meeting you!",
+                "IMPORTANT:",
+                String.format("Do not reply to this email sent by Carpool Match. %1$s will not receive it.  Click on %1$s 's email address above or just copy and paste it into a new message.", fromUser.getFullName())
+        );
+
         model.addAttribute("fromUser", fromUser);
         model.addAttribute("toUser", toUser);
         model.addAttribute("contactMessage", contactMessage);
@@ -62,9 +91,7 @@ public class NotificationController extends AbstractBaseController {
         if (errors.hasErrors())
             return "contact";
 
-        // testing
-        System.out.println(contactMessage);
-        // format and send email
+        // format and send email service
 
         redirModel.addFlashAttribute(MESSAGE_KEY, "success|Sent your message. Good luck!");
         return "redirect:/match";
