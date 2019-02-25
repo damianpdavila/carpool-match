@@ -1,6 +1,11 @@
 package com.moventisusa.carpoolmatch.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.core.env.ConfigurableEnvironment;
+import org.springframework.core.env.Environment;
 import org.springframework.core.io.ClassPathResource;
 import java.io.File;
 import java.io.FileReader;
@@ -19,6 +24,13 @@ public class ApplicationConfig {
     public ApplicationConfig() {
         properties = loadProperties();
         mapApiKey = properties.getProperty(MAPS_API_KEY);
+        // FYI to access properties later on
+        /*
+        ConfigurableEnvironment environment = applicationContext.getEnvironment();
+        System.out.println(environment.getProperty("appl.blah"));
+        System.out.println(environment.getProperty("conf.blah"));
+        */
+
     }
 
     public String getMapApiKey() {
