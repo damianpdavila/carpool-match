@@ -5,15 +5,29 @@
 
 <body>
 
-<nav th:replace="fragments :: page-header-menu"></nav>
+<nav th:replace="fragments :: page-header-menu(preferences)"></nav>
 
 <div th:replace="fragments :: messages"></div>
 
 <div th:replace="fragments :: title"></div>
 
 <main class="container" id="preferences">
+
+    <div class="row justify-content-center">
+
+            <div class="tip-image">
+                <img th:src="@{/images/good-idea-bulb.png}"/>
+            </div>
+            <div class="tip-text text-muted">
+                <p>You'll get <span class="strong-emphasis">more</span> matches by specifying <span class="strong-emphasis">fewer</span> criteria.<br/>
+                    Set those that are important to you. Leave default value for the rest.</p>
+            </div>
+
+    </div>
+
     <form method="post" th:action="@{/preferences}" th:object="${user.matchCriteria}">
-        <div class="row">
+
+        <div class="row form-content">
 
             <div class="col-md">
 
@@ -23,9 +37,7 @@
 
         </div>
         <div class="row justify-content-center">
-            <div class="col-md">
-                <input type="submit" value="Save and Show Matches" class="btn btn-primary" />
-            </div>
+            <input type="submit" value="Save and Show Matches" class="btn btn-primary" />
         </div>
     </form>
 </main>

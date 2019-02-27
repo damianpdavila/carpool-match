@@ -5,26 +5,33 @@
 
 <body>
 
-<nav th:replace="fragments :: page-header-menu"></nav>
+<nav th:replace="fragments :: page-header-menu(contact)"></nav>
 
 <div th:replace="fragments :: messages"></div>
 
 <div th:replace="fragments :: title"></div>
 
 <main class="container" id="contact">
+
+    <div class="row justify-content-center tip-text text-muted">
+        <p>Congratulations, you're on your way to a Car Pool connection!<br/>
+            Add your phone number or additional contact details to the message if you'd
+            like. Then just click Send.</p>
+    </div>
+
     <form method="post" th:action="@{/contact/{userid}(userid=${emailForm.toUser.uid})}" th:object="${emailForm}">
-        <div class="row">
+        <div class="row contact-content">
 
             <div class="col-md">
 
                 <div class="form-group">
                     <label th:for="toUser">To:</label>
-                    <input class="form-control" th:field="*{toUser.username}"/>
+                    <input class="form-control form-control-plaintext" th:field="*{toUser.username}" disabled="disabled"/>
                     <div class="error" th:errors="*{toUser}"></div>
                 </div>
                 <div class="form-group">
                     <label th:for="fromUser">From:</label>
-                    <input class="form-control" th:field="*{fromUser.username}"/>
+                    <input class="form-control form-control-plaintext" th:field="*{fromUser.username}" disabled="disabled"/>
                     <div class="error" th:errors="*{fromUser}"></div>
                 </div>
                 <div class="form-group">
@@ -37,8 +44,15 @@
 
         </div>
         <div class="row justify-content-center">
-            <input type="submit" value="Send" class="btn btn-primary" />
-            <a class="cancel-link" href="javascript:history.back()">Cancel</a>
+
+            <div class="col-2">
+                    <input type="submit" value="Send" class="btn btn-primary" />
+            </div>
+            <div class="col-2">
+                <a href="javascript:history.back()">Cancel</a>
+            </div>
+
+            </div>
         </div>
     </form>
 </main>

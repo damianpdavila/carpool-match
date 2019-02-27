@@ -65,9 +65,9 @@ public class AuthenticationController extends AbstractBaseController {
     @GetMapping(value = "/login")
     public String login(Model model, Principal user, String error, String logout) {
 
-        if (user != null)
-            return "redirect:/";
-
+        if (user != null) {
+            model.addAttribute(MESSAGE_KEY, "warning|You are already logged in.");
+        }
         if (error != null)
             model.addAttribute(MESSAGE_KEY, "danger|Your username and password are invalid");
 

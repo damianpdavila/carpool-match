@@ -48,13 +48,19 @@ public class NotificationController extends AbstractBaseController {
         String contactMessage = String.join(
                 separator,
                 String.format("Hi %s,", toUser.getUsername()),
+                " ",
                 "Looks like we're a match!",
+                " ",
                 "I'd like to discuss starting a car pool with you if you're available",
+                " ",
                 "Here's my contact info:",
+                " ",
                 String.format("Name: %s", fromUser.getFullName()),
                 String.format("Email: %s", fromUser.getEmail()),
                 "Phone: ",
+                " ",
                 "I look forward to meeting you!",
+                " ",
                 "IMPORTANT:",
                 String.format("Do not reply to this email sent by Carpool Match. %1$s will not receive it.  Click on %1$s 's email address above or just copy and paste it into a new message.", fromUser.getFullName())
         );

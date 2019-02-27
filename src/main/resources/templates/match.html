@@ -5,31 +5,54 @@
 
 <body>
 
-<nav th:replace="fragments :: page-header-menu"></nav>
+<nav th:replace="fragments :: page-header-menu(match)"></nav>
 
 <div th:replace="fragments :: messages"></div>
 
 <div th:replace="fragments :: title"></div>
 
-<main class="container-fluid" id="match">
+<main class="container" id="match">
+
+    <div class="row justify-content-center">
+
+        <div class="tip-image">
+            <img th:src="@{/images/reminder_icon.png}"/>
+        </div>
+        <div class="tip-text text-muted">
+            <p><span class="">Remember: </span>You'll get <span class="strong-emphasis">more</span> matches by specifying <span class="strong-emphasis">fewer</span> criteria.<br/>
+                You can always tweak your criteria by clicking <a th:href="@{/preferences}">Preferences</a> menu</p>
+        </div>
+
+    </div>
+
     <form method="post" th:action="@{/match}" th:object="${matchedUsers}">
 
         <div class="row">
-            <div class="col-md-3">
-                <p>The List</p>
-                <div th:each="matchedUser : ${matchedUsers}" class="matched-users">
-                    <p class="matched-username" th:text="${matchedUser.user.username}">Username</p>
-                    <p class="testing" th:text="${matchedUser.matchTotal}">Total</p>
-                    <p><a class="matchedUser-view" th:href="@{/view/{userid}(userid=${matchedUser.user.uid})}" th:text="${'Click to view details and contact ' + matchedUser.user.username}">View details</a></p>
-                    <ul class="matched-criterium" th:each="match : ${matchedUser.matchDetail}">
-                        <li th:text="${match.key}">Criterium</li>
-                    </ul>
-                </div>
+
+            <div class="col-md-9">
+
+                <img class="matched-map" th:src="${mapImage}">
 
             </div>
-            <div class="col-md">
-                <p>The Map</p>
-                <img class="matched-map" th:src="${mapImage}">
+
+            <div class="col-md-3 matched-users">
+
+                <div th:each="matchedUser, userNo : ${matchedUsers}" class="matched-user row no-gutters">
+
+                    <div class="col-2 matched-user-number"
+                         th:classappend="${#maps.containsKey(matchedUser.matchDetail, T(com.moventisusa.carpoolmatch.services.MatchService).CRITERIA_DISTANCETOMATCH)}? match-green : match-red">
+                        <span th:text="${userNo.count}">0</span>
+                    </div>
+                    <div class="col">
+                        <h5 class="matched-username" th:text="${matchedUser.user.username}">Username</h5>
+                        <p class="testing" th:text="${matchedUser.matchTotal}">Total</p>
+                        <p class="matchedUser-view"><a th:href="@{/view/{userid}(userid=${matchedUser.user.uid})}" th:text="${'Click to view details and contact ' + matchedUser.user.username}">View details</a></p>
+                        <ul class="matched-criterium text-muted">
+                            <li  th:each="match : ${matchedUser.matchDetail}" th:text="${match.key}">Criterium</li>
+                        </ul>
+
+                    </div>
+                </div>
 
             </div>
         </div>

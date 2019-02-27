@@ -18,10 +18,9 @@
 
 <body>
 
-    <div th:fragment="title" class="container">
+    <div th:fragment="title" id="page-title" class="container">
         <div class="row">
-            <div class="col-2"></div>
-            <div class="col-8">
+            <div class="col-md text-center">
                 <h1 th:text="${title}">Default Title</h1>
             </div>
         </div>
@@ -59,7 +58,7 @@
         </div>
     </nav>
 
-    <nav th:fragment="page-header-menu" class="navbar navbar-expand-lg fixed-top navbar-light bg-light">
+    <nav th:fragment="page-header-menu(activeTab)" class="navbar navbar-expand-lg fixed-top navbar-light bg-light">
         <div class="container">
             <a class="navbar-brand" href="#">Carpool Match</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -68,13 +67,13 @@
 
             <div class="collapse navbar-collapse" id="navbarContent">
                 <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
-                    <li class="nav-item active">
-                        <a class="nav-link" th:href="@{/profile}">Profile<span class="sr-only">(current)</span></a>
+                    <li class="nav-item"  th:classappend="${activeTab == 'profile'}? 'active' : ''">
+                        <a class="nav-link" th:href="@{/profile}">Profile</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item" th:classappend="${activeTab == 'preferences'}? 'active' : ''">
                         <a class="nav-link" th:href="@{/preferences}">Preferences</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item" th:classappend="${activeTab == 'match'}? 'active' : ''">
                         <a class="nav-link" th:href="@{/match}">Match</a>
                     </li>
                     <li class="nav-item" th:if="${#authorization.expression('isAuthenticated()')}">
@@ -114,114 +113,124 @@
     <div th:fragment="user-preferences">
 
         <div class="form-group row">
-            <div class="col-md">
+            <div class="col-md-4">
                 <legend>What I can offer:</legend>
             </div>
             <div class="col-md">
-                <div th:each="rT : ${T(com.moventisusa.carpoolmatch.models.RideType).values()}" class="inline-input">
-                    <input type="radio" th:id="${{rT}}" th:value="${{rT}}" th:field="*{rideType}" required="required"/>
-                    <label th:for="${{rT}}" th:text="${rT.description}">Ride Type</label>
+                <div class="custom-control custom-radio">
+                    <div th:each="rT : ${T(com.moventisusa.carpoolmatch.models.RideType).values()}" class="custom-control-inline">
+                        <input class="custom-control-input" type="radio" th:id="${{rT}}" th:value="${{rT}}" th:field="*{rideType}" required="required"/>
+                        <label class="custom-control-label" th:for="${{rT}}" th:text="${rT.description}">Ride Type</label>
+                    </div>
                 </div>
             </div>
             <div class="error" th:errors="*{rideType}"></div>
         </div>
 
         <div class="form-group row">
-            <div class="col-md">
+            <div class="col-md-4">
                 <label th:for="matchDistance">Distance from carpool match</label>
             </div>
-            <div class="col-md">
+            <div class="col-md-4">
                 <input class="form-control" th:field="*{matchDistance}" placeholder="Distance (in miles)"/>
             </div>
             <div class="error" th:errors="*{matchDistance}"></div>
         </div>
 
         <div class="form-group row">
-            <div class="col-md">
+            <div class="col-md-4">
                 <legend>Days I am available:</legend>
             </div>
             <div class="col-md">
 
-                <div th:each="day : ${daysAvailableList}" class="checkbox inline-input">
-                    <input type="checkbox" class="form-control" name="daysAvailableUpdate" th:checked="${day.available}" th:value="${day.day}" th:id="${day.day}"/>
-                    <label th:for="${day.day}" th:text="${day.day}">Day</label>
+                <div class="custom-control custom-checkbox">
+                    <div th:each="day : ${daysAvailableList}" class="checkbox custom-control-inline">
+                        <input type="checkbox" class="custom-control-input" name="daysAvailableUpdate" th:checked="${day.available}" th:value="${day.day}" th:id="${day.day}"/>
+                        <label class="custom-control-label" th:for="${day.day}" th:text="${day.day}">Day</label>
+                    </div>
                 </div>
 
             </div>
         </div>
 
         <div class="form-group row">
-            <div class="col-md">
+            <div class="col-md-4">
                 <label th:for="dropoffTime">Time I leave for school dropoff</label>
             </div>
-            <div class="col-md">
+            <div class="col-md-4">
                 <input type="time" class="form-control" th:field="*{{dropoffTime}}" th:value="*{{dropoffTime}}"  />
             </div>
             <div class="error" th:errors="*{dropoffTime}"></div>
         </div>
 
         <div class="form-group row">
-            <div class="col-md">
+            <div class="col-md-4">
                 <label th:for="pickupTime">Time I can pick up at school</label>
             </div>
-            <div class="col-md">
+            <div class="col-md-4">
                 <input type="time" class="form-control" th:field="*{{pickupTime}}" th:value="*{{pickupTime}}"  />
             </div>
             <div class="error" th:errors="*{pickupTime}"></div>
         </div>
 
         <div class="form-group row">
-            <div class="col-md">
+            <div class="col-md-4">
                 <label th:for="seatsAvailable">No. of seats I have</label>
             </div>
-            <div class="col-md">
+            <div class="col-md-4">
                 <input class="form-control" th:field="*{seatsAvailable}" placeholder="Blank for no preference" type="number" step="1" pattern="[0-9]*" title="Enter a whole number"/>
             </div>
             <div class="error" th:errors="*{seatsAvailable}"></div>
         </div>
 
         <div class="form-group row">
-            <div class="col-md">
+            <div class="col-md-4">
                 <label th:for="seatsNeeded">No. of seats I need</label>
             </div>
-            <div class="col-md">
+            <div class="col-md-4">
                 <input class="form-control" th:field="*{seatsNeeded}" placeholder="Blank for no preference"  type="number" step="1" pattern="[0-9]*" title="Enter a whole number"/>
             </div>
             <div class="error" th:errors="*{seatsNeeded}"></div>
         </div>
 
         <div class="form-group row">
-            <div class="col-md">
-                <label th:for="noSmoking">No Smoking</label>
+            <div class="col-md-4">
+                <label>No Smoking</label>
             </div>
-            <div class="col-md">
-                <input class="form-control" type="checkbox" th:field="*{noSmoking}" />
+            <div class="col-md-4">
+                <div class="custom-control custom-switch">
+                    <input class="custom-control-input" type="checkbox" th:field="*{noSmoking}" />
+                    <label class="custom-control-label" th:for="noSmoking"></label>
+                </div>
             </div>
             <div class="error" th:errors="*{noSmoking}"></div>
+
         </div>
 
-        <div class="form-group row">
-            <div class="col-md">
-                <legend>Compensation <i>(always optional)</i></legend>
+        <div class="shaded-box bg-light">
+            <div class="form-group row">
+                <div class="col-md">
+                    <legend>Compensation <i class="text-muted small">(always optional)</i></legend>
+                </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-md">
-                <label th:for="payToOtherDriver">If I am a rider only, I can pay up to $</label>
+            <div class="row">
+                <div class="col-md-4">
+                    <label th:for="payToOtherDriver">If I am a rider only, I can pay up to $</label>
+                </div>
+                <div class="col-md-4">
+                    <input class="form-control" th:field="*{payToOtherDriver}" placeholder="$N.NN, dollar sign is optional" type="text" pattern="^(\$[0-9]+\.?[0-9]*)|([0-9]*\.[0-9]+)|([0-9]*)$" title="Enter dollars and cents with optional $"/><span> per ride.</span>
+                </div>
+                <div class="error" th:errors="*{payToOtherDriver}"></div>
             </div>
-            <div class="col-md">
-                <input class="form-control" th:field="*{payToOtherDriver}" placeholder="$N.NN, dollar sign is optional" type="text" pattern="^(\$[0-9]+\.?[0-9]*)|([0-9]*\.[0-9]+)|([0-9]*)$" title="Enter dollars and cents with optional $"/><span> per ride.</span>
+            <div class="row">
+                <div class="col-md-4">
+                    <label th:for="payFromOtherRider">If I am a driver only, I would like $</label>
+                </div>
+                <div class="col-md-4">
+                    <input class="form-control" th:field="*{payFromOtherRider}" placeholder="$N.NN, dollar sign is optional" pattern="^(\$[0-9]+\.?[0-9]*)|([0-9]*\.[0-9]+)|([0-9]*)$" title="Enter dollars and cents with optional $" /><span> per ride.</span>
+                </div>
+                <div class="error" th:errors="*{payFromOtherRider}"></div>
             </div>
-            <div class="error" th:errors="*{payToOtherDriver}"></div>
-        </div>
-        <div class="row">
-            <div class="col-md">
-                <label th:for="payFromOtherRider">If I am a driver only, I would like $</label>
-            </div>
-            <div class="col-md">
-                <input class="form-control" th:field="*{payFromOtherRider}" placeholder="$N.NN, dollar sign is optional" pattern="^(\$[0-9]+\.?[0-9]*)|([0-9]*\.[0-9]+)|([0-9]*)$" title="Enter dollars and cents with optional $" /><span> per ride.</span>
-            </div>
-            <div class="error" th:errors="*{payFromOtherRider}"></div>
         </div>
     </div>
 </body>

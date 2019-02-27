@@ -60,7 +60,7 @@ public class MatchController extends AbstractBaseController {
         }
         model.addAttribute("daysAvailableList", createDaysAvailableList(user));
         model.addAttribute(user);
-        model.addAttribute("title", "Your Match Criteria");
+        model.addAttribute("title", "Your Match Preferences");
         return "preferences";
     }
 
@@ -69,7 +69,7 @@ public class MatchController extends AbstractBaseController {
                                     @RequestParam String[] daysAvailableUpdate,
                                     Errors errors, Model model, RedirectAttributes redirModel) {
 
-        model.addAttribute("title", "Your Match Criteria");
+        model.addAttribute("title", "Your Match Preferences");
         if (errors.hasErrors())
             return "preferences";
 
@@ -82,7 +82,7 @@ public class MatchController extends AbstractBaseController {
 
         userRepository.save(user);
 
-        redirModel.addFlashAttribute(MESSAGE_KEY, "success|Updated your match criteria");
+        redirModel.addFlashAttribute(MESSAGE_KEY, "success|Updated your match preferences");
         return "redirect:/match";
     }
 
@@ -110,11 +110,11 @@ public class MatchController extends AbstractBaseController {
                               // @RequestParam String[] dummy,
                               Errors errors, Model model, RedirectAttributes redirModel) {
 
-        model.addAttribute("title", "Your Match Criteria");
+        model.addAttribute("title", "Your Match Preferences");
         if (errors.hasErrors())
             return "preferences";
 
-        //redirModel.addFlashAttribute(MESSAGE_KEY, "success|Updated your match criteria");
+        //redirModel.addFlashAttribute(MESSAGE_KEY, "success|Updated your match preferences");
         return "match";
     }
 
@@ -182,6 +182,9 @@ public class MatchController extends AbstractBaseController {
 
         StaticMapsRequest req = StaticMapsApi.newRequest(MapConnector.getInstance().getContext(), new Size(WIDTH, HEIGHT));
 
+        req.scale(2);
+        req.format(StaticMapsRequest.ImageFormat.png32);
+
         StaticMapsRequest.Markers markers = new StaticMapsRequest.Markers();
         markers.color("black");
         markers.addLocation(new LatLng(user.getLatitude(), user.getLongitude()));
@@ -203,7 +206,7 @@ public class MatchController extends AbstractBaseController {
         req.center(center);
 
         StaticMapsRequest.Path path = new StaticMapsRequest.Path();
-        path.color("green");
+        path.color("0x87AF00");
 
         List<LatLng> pathPoints = getCirclePoints(center, user.getMatchCriteria().getMatchDistance(), "mile");
         for (LatLng point : pathPoints){
