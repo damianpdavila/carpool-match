@@ -46,10 +46,6 @@ form#matchCriteria.noSmoking1 {
 #page-title h1 {
   margin-bottom: 3rem;
 }
-.cancel-link,
-form input.btn {
-   margin-top: 3rem;
-}
 nav {
    border-bottom: solid 1px gainsboro;
    border-top: 4px solid coral;
@@ -142,14 +138,21 @@ main#match {
 .view-match-user {
     padding-right: 30px;
 }
-#contact textarea {
-    height: calc(14 * 1.2rem);
-    font-size: 1rem;
-    line-height: 1.2rem;
-    font-weight: lighter;
-}
 .card-link img {
     height: 40px;
+}
+#contact textarea {
+    /* ensure all 14 lines of default text is visible */
+    height: calc(14 * 1.2rem);
+    line-height: 1.2rem;
+    font-size: 1rem;
+    font-weight: lighter;
+}
+.contact-content {
+   margin-bottom: 1rem;
+}
+.form-content {
+    margin-bottom: 3rem;
 }
 .testing {
    display: none;
