@@ -13,40 +13,40 @@
 
 <main class="container" id="view">
 
-        <div class="row">
+    <div class="row">
 
-            <div class="col-md-3 view-match-user my-auto" th:object="${user}">
+        <div class="col-md-3 view-match-user my-auto" th:object="${user}">
 
-                <div class="card">
-                    <img th:src="@{/images/user-avatar.png}" class="card-img-top" alt="a user avatar image">
-                    <div class="card-body">
+            <div class="card">
+                <img th:src="@{/images/user-avatar.png}" class="card-img-top" alt="a user avatar image">
+                <div class="card-body">
 
-                        <h5 class="card-title" th:text="*{username}">Username</h5>
+                    <h5 class="card-title" th:text="*{username}">Username</h5>
 
-                    </div>
-                    <div class="card-body">
-                        <a class="card-link" th:href="@{/contact/{userid}(userid=*{uid})}">
-                            <img th:src="@{/images/email-icon.png}" class="" alt="contact me">
-                             Contact Me!</a>
-                    </div>
                 </div>
-
+                <div class="card-body">
+                    <a class="card-link" th:href="@{/contact/{userid}(userid=*{uid})}">
+                        <img th:src="@{/images/email-icon.png}" class="" alt="contact me">
+                        Contact Me!</a>
+                </div>
             </div>
-            <fieldset disabled="disabled">
-
-                <div class="col-md view-match-details" th:object="${user.matchCriteria}">
-
-                    <div class="row justify-content-center">
-                        <h4 class="text-muted" th:text="${user.username + ' Preferences'}">Username</h4>
-                    </div>
-
-                    <div th:replace="fragments :: user-preferences"></div>
-
-                </div>
-
-            </fieldset>
 
         </div>
+        <fieldset disabled="disabled">
+
+            <div class="col-md view-match-details" th:object="${user.matchCriteria}">
+
+                <div class="row justify-content-center">
+                    <h4 class="text-muted" th:text="${user.username + ' Preferences'}">Username</h4>
+                </div>
+
+                <div th:replace="fragments :: user-preferences"></div>
+
+            </div>
+
+        </fieldset>
+
+    </div>
 
 </main>
 

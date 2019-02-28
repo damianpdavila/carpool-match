@@ -56,7 +56,6 @@ nav {
 main#register,
 main#login,
 main#profile,
-main#view,
 main#contact,
 main#preferences {
     -webkit-box-shadow: 0 8px 17px 0 rgba(0,0,0,.2),0 6px 20px 0 rgba(0,0,0,.19);
@@ -68,7 +67,6 @@ main#match {
     margin-bottom: 7rem;
     padding: 2rem;
 }
-
 #preferences form,
 #match form {
    padding: 50px;
