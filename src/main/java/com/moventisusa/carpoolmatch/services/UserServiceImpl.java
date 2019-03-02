@@ -42,19 +42,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Transactional
-    @Override
-    public User update(User updatedUser) throws EmailExistsException {
+    public User update(User updatedUser ) throws EmailExistsException {
 
-        /* If email changed, ensure not exists already */
-        User existingUser = userRepository.findById(updatedUser.getUid()).get();
-        if ( ! updatedUser.getEmail().equals(existingUser.getEmail())){
+        /* Ensure no duplicate email since it is used as login userid */
+        User existingUser = userRepository.findByEmail(updatedUser.getEmail());
 
-            /* email changed must validate it */
-            if (userRepository.findByEmail(updatedUser.getEmail()) != null){
-                throw new EmailExistsException("The email address "
-                        + updatedUser.getEmail() + " already exists in the system");
-            }
+        if (existingUser == null) {
+            ;
+        } else if (updatedUser.getUid() == existingUser.getUid()) {
+            /* just an update to existing user so okay */
+            ;
+        } else {
+            /* different user, same email so error */
+            throw new EmailExistsException("The email address "
+                    + updatedUser.getEmail() + " already exists in the system");
         }
+
         userRepository.save(updatedUser);
 
         return updatedUser;

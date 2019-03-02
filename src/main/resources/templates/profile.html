@@ -28,8 +28,9 @@
                     <div class="error" th:errors="*{fullName}"></div>
                 </div>
                 <div class="form-group">
-                    <label th:for="email">Email</label>
-                    <input class="form-control" th:field="*{email}" required="required" />
+                    <label th:for="updatedEmail">Email</label>
+                    <input class="form-control" id="updatedEmail" name="updatedEmail" th:value="${updatedEmail}" required="required"/>
+                    <input th:type="hidden" id="originalEmail" name="originalEmail" readonly=readonly th:value="${originalEmail}" />
                     <div class="error" th:errors="*{email}"></div>
                 </div>
 
@@ -72,6 +73,28 @@
 </main>
 
 <footer th:replace="fragments :: page-footer"></footer>
+
+<script>
+
+$(document).ready(function(){
+
+    $('#updatedEmail').popover({
+        title: "Don't be startled",
+        content: 'If you change your email address, you will be asked to log in with your updated email.',
+        placement: 'bottom'
+    });
+
+    $('#updatedEmail').focus( function() {
+        $('#updatedEmail').popover('show');
+    });
+
+    $('#updatedEmail').blur( function() {
+        $('#updatedEmail').popover('hide');
+    });
+
+});
+
+</script>
 
 </body>
 </html>

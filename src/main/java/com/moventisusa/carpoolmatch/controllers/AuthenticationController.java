@@ -66,7 +66,8 @@ public class AuthenticationController extends AbstractBaseController {
     public String login(Model model, Principal user, String error, String logout) {
 
         if (user != null) {
-            model.addAttribute(MESSAGE_KEY, "warning|You are already logged in.");
+            // TODO invalidate the session, effectively log out.
+            ;
         }
         if (error != null)
             model.addAttribute(MESSAGE_KEY, "danger|Your username and password are invalid");
@@ -79,5 +80,12 @@ public class AuthenticationController extends AbstractBaseController {
         return "login";
     }
 
+    @GetMapping(value = "/force-logout")
+    public String forceLogout(RedirectAttributes model, Principal user) {
+
+        model.addFlashAttribute(MESSAGE_KEY, "warning|Updated your email; you must log in with your new email address");
+
+        return "force-logout";
+    }
 
 }

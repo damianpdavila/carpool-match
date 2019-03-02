@@ -152,6 +152,24 @@ main#match {
 .form-content {
     margin-bottom: 3rem;
 }
+.error {
+    color: red;
+    font-size: smaller;
+    padding: 2px 0 2px 4px;
+}
+/*  popover styling */
+.popover-header {
+    background-color: #ff7f50ee;
+    color: white;
+}
+.popover-body {
+    font-size: smaller;
+}
+.arrow {
+    /* border must match placement option, e.g., popover left => border-left-color */
+    border-bottom-color: #ff7f50ee !important;
+}
+
 .testing {
    display: none;
 }

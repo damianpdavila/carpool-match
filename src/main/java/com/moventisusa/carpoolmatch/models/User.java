@@ -75,6 +75,13 @@ public class User extends AbstractEntity {
         return email;
     }
 
+    public void setEmail(String email) {
+        if (email == null || email.length() == 0 || !isValidEmail(email))
+            throw new IllegalArgumentException("Email may not be blank");
+
+        this.email = email;
+    }
+
     public String getUsername() {
         return username;
     }
