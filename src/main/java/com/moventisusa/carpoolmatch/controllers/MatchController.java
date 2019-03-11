@@ -12,8 +12,10 @@ import com.moventisusa.carpoolmatch.models.MatchedUser;
 import com.moventisusa.carpoolmatch.models.User;
 import com.moventisusa.carpoolmatch.models.forms.DaysAvailableForm;
 import com.moventisusa.carpoolmatch.repositories.UserRepository;
+import com.moventisusa.carpoolmatch.services.EmailSendService;
 import com.moventisusa.carpoolmatch.services.MatchService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.MailException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -37,6 +39,9 @@ public class MatchController extends AbstractBaseController {
     @Autowired
     MatchService matchService;
 
+    @Autowired
+    EmailSendService emailSendService;
+
     @GetMapping(value = "/preferences")
     public String showPreferences(Model model, Principal principal) {
         User user = getLoggedInUser(principal);
@@ -45,6 +50,7 @@ public class MatchController extends AbstractBaseController {
             return "preferences";
         }
         if (user.getMatchCriteria() == null) {
+            /* New user registering */
             MatchCriteria newCriteria = new MatchCriteria();
             newCriteria.setNoSmoking(true);
 
@@ -57,6 +63,14 @@ public class MatchController extends AbstractBaseController {
             newCriteria.setDaysAvailable(testAvailable);
 
             user.setMatchCriteria(newCriteria);
+            /* Notify all users of new potential match */
+            List<User> allUsers = userRepository.findAll();
+            try {
+                emailSendService.prepareAndSendMultiple(allUsers, EmailSendService.ESS_NOTIFY_EMAIL_FROM, EmailSendService.ESS_NOTIFY_EMAIL_SUBJECT, EmailSendService.ESS_NOTIFY_EMAIL_MESSAGE);
+
+            } catch (MailException me) {
+                System.out.println("SHOWPREFERENCES send notification error");
+            }
         }
         model.addAttribute("daysAvailableList", createDaysAvailableList(user));
         model.addAttribute(user);

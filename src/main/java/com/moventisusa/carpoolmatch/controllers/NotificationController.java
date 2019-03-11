@@ -90,7 +90,7 @@ public class NotificationController extends AbstractBaseController {
 
         String toUserEmailFormatted = String.join("", toUser.getFullName(), " <", toUser.getEmail(), ">" );
         try {
-            emailSendService.prepareAndSend(toUserEmailFormatted, EmailSendService.CPMATCH_EMAIL_FROM, EmailSendService.CPMATCH_EMAIL_SUBJECT, emailForm.getMessage());
+            emailSendService.prepareAndSend(toUserEmailFormatted, EmailSendService.ESS_MATCH_EMAIL_FROM, EmailSendService.ESS_MATCH_EMAIL_SUBJECT, emailForm.getMessage());
             redirModel.addFlashAttribute(MESSAGE_KEY, "success|Sent your message. Good luck!");
         } catch (MailException me) {
             redirModel.addFlashAttribute(MESSAGE_KEY, String.join("","danger|Error sending your message to user ", toUser.getUsername(), ". Please try again."));
