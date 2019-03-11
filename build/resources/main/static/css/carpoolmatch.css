@@ -56,7 +56,6 @@ nav {
 main#register,
 main#login,
 main#profile,
-main#view,
 main#contact,
 main#preferences {
     -webkit-box-shadow: 0 8px 17px 0 rgba(0,0,0,.2),0 6px 20px 0 rgba(0,0,0,.19);
@@ -68,7 +67,6 @@ main#match {
     margin-bottom: 7rem;
     padding: 2rem;
 }
-
 #preferences form,
 #match form {
    padding: 50px;
@@ -154,6 +152,24 @@ main#match {
 .form-content {
     margin-bottom: 3rem;
 }
+.error {
+    color: red;
+    font-size: smaller;
+    padding: 2px 0 2px 4px;
+}
+/*  popover styling */
+.popover-header {
+    background-color: #ff7f50ee;
+    color: white;
+}
+.popover-body {
+    font-size: smaller;
+}
+.arrow {
+    /* border must match placement option, e.g., popover left => border-left-color */
+    border-bottom-color: #ff7f50ee !important;
+}
+
 .testing {
    display: none;
 }

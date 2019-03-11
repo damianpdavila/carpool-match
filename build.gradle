@@ -35,6 +35,7 @@ dependencies {
 	compile('org.thymeleaf.extras:thymeleaf-extras-springsecurity4:3.0.2.RELEASE')
 	compile('org.thymeleaf.extras:thymeleaf-extras-java8time')
     compile('com.google.maps:google-maps-services:0.9.1')
+	compile('org.flywaydb:flyway-core')
 	runtime('mysql:mysql-connector-java')
 	runtime('org.springframework.boot:spring-boot-devtools')
 	runtime files('resources/config.properties')
