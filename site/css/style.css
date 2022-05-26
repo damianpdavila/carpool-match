@@ -235,6 +235,7 @@ li a.btn-get-started {
     text-align: center;
     width: 100%;
     height: 50%;
+    visibility: hidden;
 }
 
 #intro .product-screens .product-screen-1 img {
