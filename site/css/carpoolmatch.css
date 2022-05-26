@@ -1,0 +1,266 @@
+/* Sticky footer styles
+-------------------------------------------------- */
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    /* Margin bottom by footer height */
+    margin-bottom: 60px;
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    /* Set the fixed height of the footer here */
+    height: 60px;
+    line-height: 60px;
+    /* Vertically center the text there */
+    background-color: #f5f5f5;
+}
+
+
+/* Custom page CSS
+-------------------------------------------------- */
+
+main.body-content {
+    padding: 60px 15px 0;
+}
+
+#message-ribbon-top {
+    margin-top: 70px;
+    margin-bottom: 5rem;
+}
+
+.footer>.container {
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+.form-control {
+    font-size: 0.8rem;
+}
+
+.form-control:disabled {
+    background-color: inherit;
+}
+
+form#matchCriteria.noSmoking1 {
+    width: 1rem;
+}
+
+#page-title h1 {
+    margin-bottom: 3rem;
+}
+
+nav {
+    border-bottom: solid 1px gainsboro;
+    border-top: 4px solid coral;
+}
+
+#navbarContent .nav-item.active a {
+    border-bottom: 2px solid coral;
+}
+
+main#register,
+main#login,
+main#profile,
+main#contact,
+main#preferences {
+    -webkit-box-shadow: 0 8px 17px 0 rgba(0, 0, 0, .2), 0 6px 20px 0 rgba(0, 0, 0, .19);
+    box-shadow: 0 8px 17px 0 rgba(0, 0, 0, .2), 0 6px 20px 0 rgba(0, 0, 0, .19);
+    margin-bottom: 7rem;
+    padding: 2rem;
+}
+
+main#match {
+    margin-bottom: 7rem;
+    padding: 2rem;
+}
+
+#preferences form,
+#match form {
+    padding: 50px;
+}
+
+.shaded-box {
+    padding: 1rem 1.5rem;
+}
+
+.tip-image img {
+    height: 4rem;
+}
+
+.tip-text p {
+    font-weight: lighter;
+    margin-bottom: 0;
+    /* Centering the text to the image height:
+      calc img height - total text line height / 2
+   */
+    padding: calc((4rem - 3rem) / 2) 0 0 15px;
+    line-height: 1.5rem;
+}
+
+.strong-emphasis {
+    font-weight: bold;
+    color: coral;
+}
+
+.matched-map {
+    -webkit-box-shadow: 0 0px 11px 0px rgba(0, 0, 0, .2), 0 6px 20px 0 rgba(0, 0, 0, .19);
+    box-shadow: 0 0px 11px 0px rgba(0, 0, 0, .2), 0 6px 20px 0 rgba(0, 0, 0, .19);
+    width: 100%;
+}
+
+.matched-users {
+    border: 1px solid #ced4da;
+    padding: 0.5rem;
+}
+
+.matched-user {}
+
+.matched-user-number {
+    text-align: center;
+    color: white;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.matched-user-number.match-green {
+    background-image: url('/images/map-marker-green.png');
+}
+
+.matched-user-number.match-red {
+    background-image: url('/images/map-marker-red.png');
+}
+
+.matchedUser-view {
+    font-weight: lighter;
+    font-size: smaller;
+    line-height: 1rem;
+}
+
+.matched-criterium {
+    padding-left: 20px;
+    line-height: 1rem;
+    font-size: smaller;
+    border-bottom: 1px solid #ced4da;
+    padding-bottom: 0.5rem;
+}
+
+.matched-criterium li {
+    margin-bottom: .2rem;
+}
+
+.view-match-details h4 {
+    margin-bottom: 2rem;
+    border-bottom: 4px solid #6c757d80;
+    padding-bottom: 0.50rem;
+}
+
+.view-match-user {
+    padding-right: 30px;
+}
+
+.card-link img {
+    height: 40px;
+}
+
+#contact textarea {
+    /* ensure all 14 lines of default text is visible */
+    height: calc(14 * 1.2rem);
+    line-height: 1.2rem;
+    font-size: 1rem;
+    font-weight: lighter;
+}
+
+.contact-content {
+    margin-bottom: 1rem;
+}
+
+.form-content {
+    margin-bottom: 3rem;
+}
+
+.error {
+    color: red;
+    font-size: smaller;
+    padding: 2px 0 2px 4px;
+}
+
+
+/*  popover styling */
+
+.popover-header {
+    background-color: #ff7f50ee;
+    color: white;
+}
+
+.popover-body {
+    font-size: smaller;
+}
+
+.arrow {
+    /* border must match placement option, e.g., popover left => border-left-color */
+    border-bottom-color: #ff7f50ee !important;
+}
+
+.testing {
+    display: none;
+}
+
+code {
+    font-size: 80%;
+}
+
+.body-content {
+    margin-top: 72px;
+}
+
+td,
+th {
+    padding: 10px;
+}
+
+tr:nth-child(odd) {
+    background-color: #e4e4e4;
+}
+
+table.job-listing {
+    margin: 30px auto;
+    border: 1px solid #e4e4e4;
+    width: 80%;
+}
+
+table.job-listing td:first-child {
+    font-weight: bold;
+}
+
+table.job-listing td:last-child {
+    width: 80%;
+}
+
+label {
+    margin-right: 15px;
+}
+
+ul.form-group {
+    padding: 0;
+}
+
+ul.form-group li {
+    list-display: none;
+    display: inline-block;
+    padding-right: 15px;
+}
+
+legend {
+    font-size: inherit;
+}
+
+.inline-input {
+    display: inline-block;
+}
